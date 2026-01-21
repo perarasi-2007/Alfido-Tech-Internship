@@ -1,0 +1,43 @@
+import os
+import shutil
+import logging
+
+# ---------- Logging Configuration ----------
+logging.basicConfig(
+    filename="file_automation.log",
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - %(message)s"
+)
+
+# ---------- File Sorting Function ----------
+def organize_files(folder_path):
+    try:
+        if not os.path.exists(folder_path):
+            print("Folder does not exist!")
+            logging.error("Folder not found")
+            return
+
+        for file in os.listdir(folder_path):
+            file_path = os.path.join(folder_path, file)
+
+            if os.path.isfile(file_path):
+                ext = file.split('.')[-1]
+
+                ext_folder = os.path.join(folder_path, ext)
+                if not os.path.exists(ext_folder):
+                    os.makedirs(ext_folder)
+
+                shutil.move(file_path, os.path.join(ext_folder, file))
+                logging.info(f"Moved {file} to {ext_folder}")
+
+        print("Files organized successfully!")
+        logging.info("File organization completed")
+
+    except Exception as e:
+        print("Error occurred:", e)
+        logging.error(str(e))
+
+
+# ---------- User Input ----------
+folder = input("Enter folder path to organize: ")
+organize_files(folder)
