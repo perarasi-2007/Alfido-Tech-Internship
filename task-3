@@ -1,0 +1,38 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+
+# Load dataset
+df = pd.read_csv('student_marks.csv')
+
+
+print("Original Data:\n", df)
+
+
+# Cleaning missing values
+df['Marks'] = df['Marks'].fillna(df['Marks'].mean())
+df['Attendance'] = df['Attendance'].fillna(df['Attendance'].mean())
+
+
+print("\nAfter Cleaning:\n", df)
+
+
+# Filtering students with marks above 75
+high_scorers = df[df['Marks'] > 75]
+print("\nStudents with Marks > 75:\n", high_scorers)
+
+
+# Grouping by department
+avg_marks = df.groupby('Department')['Marks'].mean()
+print("\nAverage Marks by Department:\n", avg_marks)
+
+
+# Summary statistics
+print("\nSummary Statistics:\n", df.describe())
+
+
+# Optional graph
+avg_marks.plot(kind='bar', title='Average Marks by Department')
+plt.xlabel('Department')
+plt.ylabel('Average Marks')
+plt.show()
